@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 // This is where we will be building our Express server.
 // 1: Import express
 const express = require('express');
