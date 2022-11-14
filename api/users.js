@@ -1,0 +1,3 @@
+// "All routes should be preceded by /api. If a route has a (*) next to it, it means that it should require a logged in user to be present, if a route has a (**) next to it, the logged in user should be the owner of the modified object."
+
+// "IMPORTANT: While writing these routes, have one terminal open, running the server using npm run start:dev and the other terminal running the npm run test:watch api script to run automated tests to verify we have created the routes correctly. All database adapters still need to be imported into db/seedData.js for the tests to pass."
