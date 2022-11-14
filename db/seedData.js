@@ -3,12 +3,54 @@
 const client = require("./client")
 
 async function dropTables() {
-  console.log("Dropping All Tables...")
+  try {
+      console.log("Dropping All Tables...")
+
+      await client.query(`
+      DROP TABLE IF EXISTS routine_activities;
+      DROP TABLE IF EXISTS routines;
+      DROP TABLE IF EXISTS client;
+      DROP TABLE IF EXISTS users;
+      `);
+      
+      console.log("Finished dropping tables!");
+  } catch (error) {
+      console.error("Error dropping tables!")
+  }
   // drop all tables, in the correct order
 }
 
 async function createTables() {
-  console.log("Starting to build tables...")
+  try {
+      console.log("Starting to build tables...")
+
+      await client.query(`
+      CREATE TABLE users (
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(255) UNIQUE NOT NULL,
+        password VARCHAR(255) NOT NULL);
+        CREATE TABLE activities (
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE NOT NULL,
+        description text NOT NULL
+      );
+        CREATE TABLE routines (
+        id SERIAL PRIMARY KEY,
+        "creatorId" INTEGER REFERENCES users(id),
+        "isPublic" BOOLEAN DEFAULT false,
+        name VARCHAR(255) UNIQUE NOT NULL,
+        goal TEXT NOT NULL
+      );
+        CREATE TABLE "routine_activities" (
+        id SERIAL PRIMARY KEY,
+        "routineId" INTEGER UNIQUE REFERENCES routines (id),
+        "activityId" INTEGER UNIQUE REFERENCES activities (id),
+        duration integer,
+        count integer);
+      `);
+  } catch (error) {
+      console.error("Error building tables!")
+  }
   // create all tables, in the correct order
 }
 
