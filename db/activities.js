@@ -4,7 +4,7 @@ async function getAllActivities() {
     try {
         const { rows } = await client.query(`
         SELECT *
-        FROM activities`)
+        FROM activities`);
 
         return rows
     } catch (error) {
@@ -17,7 +17,7 @@ async function getActivityById(id) {
         await client.query(`
         SELECT id
         FROM activities
-        WHERE id=${id}`)
+        WHERE id=${id}`);
     } catch (error) {
         console.log(error)
     }
@@ -28,7 +28,7 @@ async function getActivityByName(name) {
         await client.query(`
         SELECT name
         FROM activities
-        WHERE name=${name}`)
+        WHERE name=${name}`);
     } catch (error) {
         console.log(error)
     }
@@ -45,12 +45,14 @@ async function attachActivitiesToRoutines(routines) {
 
 async function createActivity({ name, description }) {
     try {
-        await client.query(`
+        const { rows: [activities] } = await client.query(`
         INSERT INTO activities(name, description)
         VALUES ($1, $2)
         ON CONFLICT (name) DO NOTHING
         RETURNING *
         `, [name, description])
+
+        return activities
     } catch (error) {
         console.log(error)
     }

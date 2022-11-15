@@ -1,6 +1,9 @@
 // require in the database adapter functions as you write them (createUser, createActivity...)
-// const { } = require('./');
-const client = require("./client")
+const { createUser } = require('./users.js');
+const { createActivity, getAllActivities } = require('./activities.js')
+const { createRoutine, getRoutinesWithoutActivities } = require('./routines.js')
+const { addActivityToRoutine } = require('./routine_activities.js')
+const client  = require("./client")
 
 async function dropTables() {
   try {
@@ -9,7 +12,7 @@ async function dropTables() {
       await client.query(`
       DROP TABLE IF EXISTS routine_activities;
       DROP TABLE IF EXISTS routines;
-      DROP TABLE IF EXISTS client;
+      DROP TABLE IF EXISTS activities;
       DROP TABLE IF EXISTS users;
       `);
       
@@ -29,25 +32,30 @@ async function createTables() {
         id SERIAL PRIMARY KEY,
         username VARCHAR(255) UNIQUE NOT NULL,
         password VARCHAR(255) NOT NULL);
-        CREATE TABLE activities (
+
+      CREATE TABLE activities (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) UNIQUE NOT NULL,
-        description text NOT NULL
+        description TEXT NOT NULL
       );
-        CREATE TABLE routines (
+
+      CREATE TABLE routines (
         id SERIAL PRIMARY KEY,
         "creatorId" INTEGER REFERENCES users(id),
         "isPublic" BOOLEAN DEFAULT false,
         name VARCHAR(255) UNIQUE NOT NULL,
-        goal TEXT NOT NULL
-      );
-        CREATE TABLE "routine_activities" (
+        goal TEXT NOT NULL);
+
+      CREATE TABLE routine_activities (
         id SERIAL PRIMARY KEY,
-        "routineId" INTEGER UNIQUE REFERENCES routines (id),
-        "activityId" INTEGER UNIQUE REFERENCES activities (id),
-        duration integer,
-        count integer);
-      `);
+        "routineId" INTEGER REFERENCES routines(id),
+        "activityId" INTEGER REFERENCES activities(id),
+        duration INTEGER,
+        count INTEGER,
+        UNIQUE ("routineId", "activityId")
+        );
+        `);
+
   } catch (error) {
       console.error("Error building tables!")
   }
@@ -140,9 +148,9 @@ async function createInitialRoutines() {
       goal: "Running, stairs. Stuff that gets your heart pumping!",
     },
   ]
-  const routines = await Promise.all(
-    routinesToCreate.map((routine) => createRoutine(routine))
-  )
+  const routinePromises = routinesToCreate.map(async (routine) =>  await createRoutine(routine))
+  // console.log(routinePromises)   
+  const routines = await Promise.all(routinePromises)
   console.log("Routines Created: ", routines)
   console.log("Finished creating routines.")
 }
