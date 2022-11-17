@@ -5,7 +5,7 @@ const pg = require('pg');
 const { client } = require('./db/index');
 
 // 2. Make a new pg.client instance
-const client = new pg.Client('postgres://localhols:5432/fitness-dev')
+const client = new pg.Client('postgres://localhost:5432/fitness-dev')
 
 // 3. Don't forget to connect your db client
 client.connect();
