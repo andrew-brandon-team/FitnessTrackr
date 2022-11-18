@@ -20,6 +20,15 @@ const { JWT_SECRET } = process.env;
 
 
 //  GET api/users/me
+// usersRouter.get('/me', async (req, res, next ) =>{
+//   try {
+//     if (!req.user) {
+//       next({
+//         name: 
+//       })
+//     }
+//   }
+// })
 
 //  GET api/users/:username/routines
 
