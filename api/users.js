@@ -6,7 +6,8 @@
 const express = require('express');
 const usersRouter = express.Router();
 // import functions from db
-const { createUser, getUser, getUserbyId, getUserByUsername } = require('../db');
+const { createUser, getUser, getUserbyId, getUserByUsername, getPublicRoutinesByUser, getAllRoutinesByUser } = require('../db');
+const { requireUser } = require('./utils')
 
 // JWT import
 const jwt = require('jsonwebtoken');
@@ -20,17 +21,42 @@ const { JWT_SECRET } = process.env;
 
 
 //  GET api/users/me
-// usersRouter.get('/me', async (req, res, next ) =>{
-//   try {
-//     if (!req.user) {
-//       next({
-//         name: 
-//       })
-//     }
-//   }
-// })
+usersRouter.get('/me', async (req, res, next ) =>{
+  try {
+    if (!req.user) {
+      res.send(req.user)
+      } else {
+        res.send({
+          name: "Unathorized",
+          message: "Please login"
+        })
+      } 
+    } catch (error) {
+      console.log(error)
+    }
+});
 
 //  GET api/users/:username/routines
+usersRouter.get("/:username/routines", requireUser, async (req, res, next) => {
+  try {
+    const {username} = req.params;
+    const user = await getUserByUsername(username);
+    if(!user) {
+      res.send({
+        name: "NoUserFound",
+        message: "Unable to find user"
+      })
+    } else if(req.user && user.id === req.user.id) {
+      const routines = await getAllRoutinesByUser({username: username})
+      res.send(routines)
+    } else {
+      const publicRoutines = await getPublicRoutinesByUser({username: username})
+      res.send(publicRoutines)
+    }
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 //  POST api/users/login
 usersRouter.post('/login', async (req, res, next) => {
