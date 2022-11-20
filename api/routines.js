@@ -39,6 +39,30 @@ routinesRouter.get('/', async (req, res, next) => {
 });
 
 // POST /routines (*)
+routinesRouter.post('/', requireUser, async (req, res, next) => {
+    const {name, description} = req.body;
+
+    const routineData = {};
+
+    try {
+        routineData.creatorId = req.user.id;
+        routineData.name = name;
+        routineData.description = description;
+
+        const routine = await createRoutine(routineData);
+
+        if (routine) {
+            res.send(routine);
+        } else {
+            next({
+                name: "RoutineCreationError",
+                message: "There was an error creating your routine. Please try again"
+            })
+        }
+    } catch ({ name, message }) {
+        console.log({ name, message });
+    }
+});
 
 
 // PATCH /routines/:routineId(**)
