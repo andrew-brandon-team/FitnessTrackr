@@ -9,7 +9,7 @@
     "seed": "node ./db/seed.js",
     "start:dev": "nodemon server.js",
     "start": "node server.js",
-    "seed-and-start": "node db/seed.js && node index.js"
+    "seed-start": "node db/seed.js && node index.js"
   },
   "repository": {
     "type": "git",
