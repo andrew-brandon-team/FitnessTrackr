@@ -10,14 +10,17 @@ async function dropTables() {
   try {
       console.log("Dropping All Tables...")
 
-      await client.query(`
+      const droppedTables = await client.query(`
       DROP TABLE IF EXISTS routine_activities;
       DROP TABLE IF EXISTS routines;
       DROP TABLE IF EXISTS activities;
       DROP TABLE IF EXISTS users;
       `);
-      
+
       console.log("Finished dropping tables!");
+      
+      return droppedTables;
+      
   } catch (error) {
       console.error("Error dropping tables!")
   }
@@ -228,14 +231,14 @@ async function createInitialRoutineActivities() {
 
 async function rebuildDB() {
   try {
-    client.connect()
+    await client.connect()
     await dropTables()
     await createTables()
     await createInitialUsers()
     await createInitialActivities()
     await createInitialRoutines()
     await createInitialRoutineActivities()
-    client.end()
+    await client.end()
   } catch (error) {
     console.log("Error during rebuildDB")
     throw error}
