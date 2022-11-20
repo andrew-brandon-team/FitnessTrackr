@@ -2,12 +2,19 @@
 
 // 1. Import pg
 const pg = require('pg');
-const { client } = require('./db/index');
+// const { client } = require('./db/index');
 
 // 2. Make a new pg.client instance
 let client 
 if (process.env.db_url) {
-  new pg.Client(process.env.db_url)
+  client = new pg.Client({
+    connectionString: process.env.db_url,
+    host: process.env.db_host,
+    database: process.env.db_databse,
+    port: process.env.db_port,
+    user: process.env.db_user,
+    password: process.env.db_password
+  })
 } else {
   client = new pg.Client({
     host: 'localhost',
