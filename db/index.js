@@ -5,25 +5,18 @@ const pg = require('pg');
 // const { client } = require('./db/index');
 
 // 2. Make a new pg.client instance
-let client 
-if (process.env.db_url) {
-  client = new pg.Client({
-    connectionString: process.env.db_url,
-    host: process.env.db_host,
-    database: process.env.db_databse,
-    port: process.env.db_port,
-    user: process.env.db_user,
-    password: process.env.db_password
-  })
-} else {
-  client = new pg.Client({
-    host: 'localhost',
-    database: 'fitness-dev',
-    port: 5432,
-    user: 'sleazycook',
-    password: ''
-  })
-}
+
+
+const client = new pg.Client({
+  connectionString: process.env.db_url || 'http://localhost:5432/fitness-dev',
+  host: process.env.db_host || 'localhost',
+  database: process.env.db_database || 'fitness-dev',
+  port: process.env.db_port || 5432,
+  user: process.env.db_user || 'sleazycook',
+  password: process.env.db_password || undefined
+})
+
+
 
 // 3. Don't forget to connect your db client
 // client.connect();
