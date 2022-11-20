@@ -11,11 +11,11 @@ require('dotenv').config()
 // const connectionString =  process.env.db_url || 'http://localhost:5432/fitness-dev'
 
 const client = new pg.Client({
-  host: process.env.db_host || 'localhost',
-  database: process.env.db_database || 'fitness-dev',
-  port: process.env.db_port || 5432,
-  user: process.env.db_user || 'sleazycook',
-  password: process.env.db_password || undefined,
+  host: process.env.DB_HOST || 'localhost',
+  database: process.env.DB_DATABASE || 'fitness-dev',
+  port: process.env.DB_PORT || 5432,
+  user: process.env.DB_USER || 'sleazycook',
+  password: process.env.DB_PASSWORD || undefined,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnathorized: false } : undefined,
 });
 // console.log(client);
