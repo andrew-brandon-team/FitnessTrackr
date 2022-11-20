@@ -231,14 +231,14 @@ async function createInitialRoutineActivities() {
 
 async function rebuildDB() {
   try {
-    await client.connect()
+    client.connect()
     await dropTables()
     await createTables()
     await createInitialUsers()
     await createInitialActivities()
     await createInitialRoutines()
     await createInitialRoutineActivities()
-    await client.end()
+    client.end()
   } catch (error) {
     console.log("Error during rebuildDB")
     throw error}

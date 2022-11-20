@@ -2,8 +2,7 @@
 
 // 1. Import pg
 const pg = require('pg');
-// const { client } = require('./db/index');
-
+require('dotenv').config()
 // 2. Make a new pg.client instance
 
 
@@ -19,6 +18,8 @@ const client = new pg.Client({
   password: process.env.db_password || undefined,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnathorized: false } : undefined,
 });
+// console.log(client);
+// client.connect();
 
 // 3. Don't forget to connect your db client
 // client.connect();

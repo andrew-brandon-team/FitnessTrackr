@@ -7,7 +7,6 @@ const { client } = require('./db/index')
 // 2: Setting up new express server instance
 const app = express();
 
-
 client.connect()
 // 3: Set up your port to listen to our server
 app.listen(3000, () => {
