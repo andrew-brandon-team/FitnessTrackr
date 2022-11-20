@@ -10,9 +10,9 @@ const {
   attachActivitiesToRoutines, 
   createActivity, 
   updateActivity,
-  getPublicRoutinesByActivity
+  getAllPublicRoutines
 } = require('../db');
-const { post } = require('./users');
+
 
 // GET ACTIVITIES
 activitiesRouter.get('/', async (req, res, next) => {
@@ -85,7 +85,7 @@ activitiesRouter.get('/:activityId/routines', async (req, res, next) =>{
   try {
     const id = req.params.activityId;
     const activity = {id: id};
-    const routines = await getPublicRoutinesByActivity(activity);
+    const routines = await getAllPublicRoutines(activity);
     if (routines.length === 0)
       res.send({
         message: "Activity not found",
