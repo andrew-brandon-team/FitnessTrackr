@@ -3,7 +3,8 @@ const { createUser } = require('./users.js');
 const { createActivity, getAllActivities } = require('./activities.js')
 const { createRoutine, getRoutinesWithoutActivities } = require('./routines.js')
 const { addActivityToRoutine } = require('./routine_activities.js')
-const client  = require("./client")
+// const client  = require("./client")
+const {client} = require('./index')
 
 async function dropTables() {
   try {
@@ -234,12 +235,13 @@ async function rebuildDB() {
     await createInitialActivities()
     await createInitialRoutines()
     await createInitialRoutineActivities()
+    client.end()
   } catch (error) {
     console.log("Error during rebuildDB")
-    throw error
-  } finally {
-    client.end()
-  }
+    throw error}
+  // } finally {
+    
+  // }
 }
 
 module.exports = {

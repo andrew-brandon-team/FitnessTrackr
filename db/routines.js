@@ -1,5 +1,5 @@
 const { attachActivitiesToRoutines } = require('./activities');
-const client = require('./client');
+const {client} = require('./index');
 
 async function getRoutineById(id) {
     try {
