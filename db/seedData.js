@@ -236,6 +236,8 @@ async function rebuildDB() {
   } catch (error) {
     console.log("Error during rebuildDB")
     throw error
+  } finally {
+    client.end()
   }
 }
 

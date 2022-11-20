@@ -26,7 +26,7 @@ if (process.env.db_url) {
 }
 
 // 3. Don't forget to connect your db client
-client.connect();
+// client.connect();
 
 // Last step. Export the db client
 module.exports = {
